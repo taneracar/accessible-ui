@@ -10,7 +10,7 @@ import { compareDirs, needsReview, report } from "./compare.ts";
 
 const ref = process.argv[2] ?? "main";
 const out = "visual/out";
-const run = (cmd: string, args: string[], cwd = ".") => execFileSync(cmd, args, { cwd, stdio: "inherit" });
+const run = (cmd: string, args: string[], cwd = ".") => execFileSync(cmd, args, { cwd, stdio: "inherit", timeout: 5 * 60_000 }); // a hung child must fail, not hang CI
 const build = (cwd: string) => run("npm", ["run", "build:storybook"], cwd);
 
 rmSync(out, { recursive: true, force: true });

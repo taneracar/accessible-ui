@@ -26,7 +26,7 @@
     "test:keyboard": "vitest run --project=keyboard",
     "test:stories": "vitest run --project=stories-light --project=stories-dark",
     "build": "vite build && tsc -p tsconfig.build.json",
-    "build:storybook": "storybook build --quiet -o storybook-static",
+    "build:storybook": "node visual/build-storybook.ts",
     "visual": "node visual/run.ts",
     "check:package": "publint --strict"
   },

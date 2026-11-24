@@ -5,6 +5,9 @@ import { PNG } from "pngjs";
 
 export type Result = { file: string; status: "same" | "changed" | "added" | "removed"; pixels: number };
 
+const CLEAR = 0.1;
+const NOISE_PIXELS = 32;
+
 const pngs = (dir: string) => (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith(".png")) : []);
 
 /** Copies onto a canvas of the given size; pixels outside the original are magenta, so a size change always differs. */
@@ -27,9 +30,12 @@ export function compareDirs(baseDir: string, headDir: string, diffDir: string): 
     const width = Math.max(a.width, b.width);
     const height = Math.max(a.height, b.height);
     const diff = new PNG({ width, height });
-    // Both sides come from the same machine and browser, so no pixel allowance is needed.
-    // A low colour threshold is what lets a subtle token change (one shade) through to review.
-    const pixels = pixelmatch(pad(a, width, height).data, pad(b, width, height).data, diff.data, width, height, { threshold: 0.02, includeAA: true });
+    const [pa, pb] = [pad(a, width, height).data, pad(b, width, height).data];
+    const count = (threshold: number, out?: PNG) => pixelmatch(pa, pb, out?.data, width, height, { threshold, includeAA: true });
+    const any = count(0, diff);
+    // Two rules, both measured on this repo (see README): a clear difference counts from one
+    // pixel; a faint one only when it covers more than rasteriser noise (4-8 px seen) can.
+    const pixels = count(CLEAR) > 0 || any > NOISE_PIXELS ? any : 0;
     if (pixels > 0) writeFileSync(join(diffDir, file), PNG.sync.write(diff));
     return { file, status: pixels > 0 ? "changed" : "same", pixels };
   });

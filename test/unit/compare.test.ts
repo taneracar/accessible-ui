@@ -27,8 +27,10 @@ it("classifies same, added and removed", () => {
 });
 it("sees one changed pixel", () =>
   expect(dirs({ "a.png": [4, 4, white] }, { "a.png": [4, 4, white, [0, 0, 0]] })[0]).toMatchObject({ status: "changed", pixels: 1 }));
-it("sees a change of one shade", () =>
-  expect(dirs({ "a.png": [4, 4, [11, 107, 75]] }, { "a.png": [4, 4, [16, 115, 82]] })[0]!.status).toBe("changed"));
+it("sees the smallest colour change when it fills an area", () =>
+  expect(dirs({ "a.png": [8, 8, [11, 107, 75]] }, { "a.png": [8, 8, [11, 107, 76]] })[0]).toMatchObject({ status: "changed", pixels: 64 }));
+it("ignores faint noise in a few pixels", () =>
+  expect(dirs({ "a.png": [4, 4, [11, 107, 75]] }, { "a.png": [4, 4, [11, 107, 76]] })[0]!.status).toBe("same"));
 it("sees a size change, whatever the colours", () =>
   expect(dirs({ "a.png": [4, 4, white] }, { "a.png": [4, 5, white] })[0]).toMatchObject({ status: "changed", pixels: 4 }));
 it("the report lists only what differs", () => {

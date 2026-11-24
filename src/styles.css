@@ -1,0 +1,114 @@
+/* Every colour token is light-dark(#light, #dark). test/contrast.test.ts parses
+   this block and checks the pairs that are used together, in both themes. */
+:root {
+  color-scheme: light dark;
+  --aui-canvas: light-dark(#f4f6f5, #121715);
+  --aui-surface: light-dark(#ffffff, #1b221f);
+  --aui-text: light-dark(#17201c, #eaf0ed);
+  --aui-text-muted: light-dark(#53605a, #a5b3ac);
+  --aui-border: light-dark(#7b8a83, #73837b);
+  --aui-accent: light-dark(#0b6b4b, #5fd3a4);
+  --aui-accent-hover: light-dark(#08543b, #86e2bd);
+  --aui-on-accent: light-dark(#ffffff, #08281c);
+  --aui-danger: light-dark(#b3261e, #ff9a8f);
+  --aui-danger-hover: light-dark(#8f1d17, #ffb9b1);
+  --aui-on-danger: light-dark(#ffffff, #3a0a06);
+  --aui-highlight: light-dark(#dff1e9, #213d32);
+  --aui-focus: light-dark(#1450c8, #8db8ff);
+  --aui-radius: 8px;
+  --aui-target: 44px;
+  --aui-font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+[data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+
+.aui-button, .aui-input, .aui-switch, .aui-tab, .aui-tabpanel, .aui-menu, .aui-listbox,
+.aui-dialog, .aui-toast, .aui-field { font-family: var(--aui-font); font-size: 1rem; line-height: 1.4; box-sizing: border-box; }
+
+:where(.aui-button, .aui-input, .aui-switch, .aui-tab, .aui-tabpanel, .aui-menuitem, .aui-dialog):focus-visible {
+  outline: 3px solid var(--aui-focus);
+  outline-offset: 2px;
+}
+.aui-visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Button */
+.aui-button {
+  min-height: var(--aui-target); padding: 8px 16px; border: 1px solid transparent;
+  border-radius: var(--aui-radius); font-weight: 600; cursor: pointer;
+}
+.aui-button--primary { background: var(--aui-accent); color: var(--aui-on-accent); }
+.aui-button--primary:hover { background: var(--aui-accent-hover); }
+.aui-button--secondary { background: var(--aui-surface); color: var(--aui-text); border-color: var(--aui-border); }
+.aui-button--secondary:hover { background: var(--aui-highlight); }
+.aui-button--danger { background: var(--aui-danger); color: var(--aui-on-danger); }
+.aui-button--danger:hover { background: var(--aui-danger-hover); }
+.aui-button[aria-disabled="true"] { background: var(--aui-canvas); color: var(--aui-text-muted); border: 1px dashed var(--aui-border); cursor: not-allowed; }
+
+/* Field, input */
+.aui-field { display: grid; gap: 6px; color: var(--aui-text); position: relative; max-width: 420px; }
+.aui-label { font-weight: 600; }
+.aui-hint { color: var(--aui-text-muted); font-size: .9rem; }
+.aui-error { color: var(--aui-danger); font-size: .9rem; font-weight: 600; }
+.aui-input {
+  min-height: var(--aui-target); width: 100%; padding: 8px 12px; color: var(--aui-text);
+  background: var(--aui-surface); border: 1px solid var(--aui-border); border-radius: var(--aui-radius);
+}
+.aui-input::placeholder { color: var(--aui-text-muted); opacity: 1; }
+.aui-input[aria-invalid="true"] { border: 2px solid var(--aui-danger); }
+
+/* Switch */
+.aui-switch {
+  display: inline-flex; align-items: center; gap: 12px; min-height: var(--aui-target); padding: 4px;
+  background: none; border: 0; border-radius: var(--aui-radius); color: var(--aui-text); cursor: pointer;
+}
+.aui-switch__track { width: 44px; height: 24px; border-radius: 12px; border: 2px solid var(--aui-border); position: relative; flex: none; box-sizing: border-box; }
+.aui-switch__thumb { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--aui-border); transition: transform 150ms; }
+.aui-switch[aria-checked="true"] .aui-switch__track { background: var(--aui-accent); border-color: var(--aui-accent); }
+.aui-switch[aria-checked="true"] .aui-switch__thumb { transform: translateX(20px); background: var(--aui-on-accent); }
+
+/* Tabs */
+.aui-tablist { display: flex; gap: 4px; border-bottom: 1px solid var(--aui-border); overflow-x: auto; padding: 5px 5px 0; }
+.aui-tab { min-height: var(--aui-target); padding: 8px 16px; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--aui-text-muted); cursor: pointer; flex: none; }
+.aui-tab[aria-selected="true"] { color: var(--aui-text); font-weight: 600; border-bottom-color: var(--aui-accent); }
+.aui-tabpanel { padding: 16px; color: var(--aui-text); }
+
+/* Menu, listbox */
+.aui-menu-root { position: relative; display: inline-block; }
+.aui-menu, .aui-listbox {
+  position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; min-width: 200px; margin: 0; padding: 4px;
+  list-style: none; background: var(--aui-surface); color: var(--aui-text);
+  border: 1px solid var(--aui-border); border-radius: var(--aui-radius);
+}
+.aui-listbox { right: 0; max-height: 264px; overflow-y: auto; }
+.aui-menuitem, .aui-option { display: flex; align-items: center; min-height: var(--aui-target); padding: 4px 12px; border-radius: 4px; cursor: pointer; box-sizing: border-box; }
+.aui-menuitem:hover, .aui-menuitem:focus, .aui-option[data-active="true"] { background: var(--aui-highlight); }
+.aui-menuitem:focus-visible { outline-offset: -3px; }
+.aui-option[data-active="true"] { box-shadow: inset 3px 0 0 var(--aui-accent); }
+.aui-option[aria-selected="true"]::after { content: "✓" / ""; margin-left: auto; padding-left: 12px; }
+.aui-menuitem[aria-disabled="true"] { color: var(--aui-text-muted); cursor: not-allowed; }
+
+/* Dialog */
+.aui-dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 24px; overflow: auto; background: var(--aui-surface); color: var(--aui-text); border: 1px solid var(--aui-border); border-radius: 12px; }
+.aui-dialog::backdrop { background: rgb(0 0 0 / .55); }
+.aui-dialog__title { margin: 0 0 8px; font-size: 1.25rem; }
+.aui-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+/* Toast */
+.aui-toasts { position: fixed; z-index: 20; inset: auto 16px 16px auto; display: grid; gap: 8px; width: min(360px, calc(100vw - 32px)); }
+.aui-toast { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 16px; background: var(--aui-surface); color: var(--aui-text); border: 1px solid var(--aui-border); border-left: 4px solid var(--aui-accent); border-radius: var(--aui-radius); }
+.aui-toast--error { border-left-color: var(--aui-danger); }
+
+@media (prefers-reduced-motion: reduce) { .aui-switch__thumb { transition: none; } }
+
+/* Windows high contrast replaces our colours, so state must not live in a background alone. */
+@media (forced-colors: active) {
+  .aui-switch__thumb { background: ButtonText; }
+  .aui-switch[aria-checked="true"] .aui-switch__track { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+  .aui-switch[aria-checked="true"] .aui-switch__thumb { background: HighlightText; }
+  .aui-tab[aria-selected="true"] { border-bottom-color: Highlight; }
+  .aui-option[data-active="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+  .aui-button[aria-disabled="true"], .aui-menuitem[aria-disabled="true"] { color: GrayText; }
+}

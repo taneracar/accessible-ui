@@ -1,0 +1,9 @@
+node_modules
+dist
+storybook-static
+visual/out
+test-results
+.vitest-attachments
+__screenshots__
+*.log
+.DS_Store

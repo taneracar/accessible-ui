@@ -72,3 +72,10 @@ test("aria-expanded follows the state", async () => {
   await press("{Enter}");
   await expect.element(b).toHaveAttribute("aria-expanded", "true");
 });
+
+test("an action that moves focus itself wins over focus return", async () => {
+  const s = await mount(<Menu label="Actions" items={[{ id: "a", label: "Go", onSelect: () => (s.getByRole("button", { name: "after" }).element() as HTMLElement).focus() }]} />);
+  await press("{Tab}{Enter}");
+  await press("{Enter}");
+  expect(name()).toBe("after");
+});

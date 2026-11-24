@@ -38,10 +38,12 @@ test("manual activation: arrows only move focus", async () => {
   expect(change).toHaveBeenCalledExactlyOnceWith("Two");
 });
 
-test("right-to-left: ArrowLeft goes to the next tab", async () => {
+test("right-to-left: ArrowLeft goes to the next tab, ArrowRight back", async () => {
   await mount(<div dir="rtl"><Tabs label="L" tabs={tabs} /></div>);
   await press("{Tab}{ArrowLeft}");
   expect(name()).toBe("Two");
+  await press("{ArrowRight}");
+  expect(name()).toBe("One");
 });
 
 test("falls back when the selected tab is removed", async () => {

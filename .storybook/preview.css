@@ -1,0 +1,2 @@
+body { margin: 0; background: var(--aui-canvas); color: var(--aui-text); font-family: var(--aui-font); }
+#storybook-root { padding: 24px; box-sizing: border-box; min-height: 100vh; }
